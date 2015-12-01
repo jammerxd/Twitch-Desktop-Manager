@@ -44,6 +44,9 @@
     <ApplicationIcon>Twitch Desktop Manager.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ChatSharp">
+      <HintPath>E:\ChatSharp-master\ChatSharp\bin\Release\ChatSharp.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.1.3.234, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.1.3-ALPHA234\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -77,6 +80,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="Resources\Controls\Manager.xaml.cs">
+      <DependentUpon>Manager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Controls\Startup.xaml.cs">
+      <DependentUpon>Startup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Helpers\PasswordAssistant.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -93,6 +103,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\Controls\Manager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Controls\Startup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -131,9 +149,7 @@
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\DLLs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
@@ -141,6 +157,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Twitch Desktop Manager.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DLLs\ChatSharp.dll" />
+    <EmbeddedResource Include="Resources\DLLs\MahApps.Metro.dll" />
+    <EmbeddedResource Include="Resources\DLLs\System.Windows.Interactivity.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

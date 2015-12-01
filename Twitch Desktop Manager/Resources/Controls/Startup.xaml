@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="Twitch_Desktop_Manager.Resources.Controls.Startup"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:local="clr-namespace:Twitch_Desktop_Manager.Resources.Controls"
+            mc:Ignorable="d" 
+            xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+            xmlns:Helpers="clr-namespace:Twitch_Desktop_Manager.Resources.Helpers"
+            d:DesignHeight="300" 
+            d:DesignWidth="300">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+                <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"></Setter>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource AccentColorBrush2}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                    <Style.Triggers>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </Trigger>
+                        <Trigger Property="HasItems" Value="True">
+                            <Setter Property="IsEnabled" Value="True" />
+                            <Setter Property="SelectedIndex" Value="0"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ResourceDictionary>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="170"/>
+            
+        </Grid.ColumnDefinitions>
+
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Label Content="IRC URL: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" />
+        <Label Content="IRC PORT: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
+        <Label Content="IRC USERNAME: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
+        <Label Content="IRC OATH KEY: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
+
+        <TextBox HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  Text="{Binding ircServer}" VerticalAlignment="Center" Width="160" Grid.Column="1" Grid.Row="0" mahapps:TextBoxHelper.Watermark="irc.twitch.tv"/>
+        <TextBox HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  Text="{Binding ircPort}" VerticalAlignment="Center" Width="160" Grid.Column="1" Grid.Row="1" mahapps:TextBoxHelper.Watermark="6667"/>
+        <TextBox HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  Text="{Binding ircUsername}" VerticalAlignment="Center" Width="160" Grid.Column="1" Grid.Row="2" mahapps:TextBoxHelper.Watermark="twitchbot"/>
+        <PasswordBox HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" Width="160" Helpers:PasswordBoxAssistant.BindPassword="True" Helpers:PasswordBoxAssistant.BoundPassword="{Binding ircOATH}">
+            <PasswordBox.InputBindings>
+                <KeyBinding Key="Return" Command="{Binding LoginCommand}"/>
+            </PasswordBox.InputBindings>
+        </PasswordBox>
+        <Button Content="{Binding btnLoginText}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" Width="160" Height="40"/>
+        <CheckBox Content="Save Login" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" IsChecked="{Binding saveLogin}"/>
+
+    </Grid>
+</UserControl>

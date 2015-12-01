@@ -31,6 +31,7 @@ namespace Twitch_Desktop_Manager
             vm = new ViewModel(mainCallbacks);
             this.DataContext = vm;
         }
+
         #region MainWindowCallbacks Class
         public class MainWindowCallbacks : IMainWindowCallbacks
         {
