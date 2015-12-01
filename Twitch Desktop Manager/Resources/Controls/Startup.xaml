@@ -16,10 +16,11 @@
                     <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
                 </ResourceDictionary.MergedDictionaries>
                 <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+                
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"></Setter>
-                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"></Setter>
-                    <Style.Triggers>
+                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
+                        <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="{DynamicResource AccentColorBrush2}"/>
                         </Trigger>
@@ -52,22 +53,23 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Label Content="IRC URL: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" />
         <Label Content="IRC PORT: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
         <Label Content="IRC USERNAME: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
         <Label Content="IRC OATH KEY: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
 
-        <TextBox HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  Text="{Binding ircServer}" VerticalAlignment="Center" Width="160" Grid.Column="1" Grid.Row="0" mahapps:TextBoxHelper.Watermark="irc.twitch.tv"/>
-        <TextBox HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  Text="{Binding ircPort}" VerticalAlignment="Center" Width="160" Grid.Column="1" Grid.Row="1" mahapps:TextBoxHelper.Watermark="6667"/>
-        <TextBox HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  Text="{Binding ircUsername}" VerticalAlignment="Center" Width="160" Grid.Column="1" Grid.Row="2" mahapps:TextBoxHelper.Watermark="twitchbot"/>
-        <PasswordBox HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" Width="160" Helpers:PasswordBoxAssistant.BindPassword="True" Helpers:PasswordBoxAssistant.BoundPassword="{Binding ircOATH}">
+        <TextBox IsEnabled="{Binding ircServerEnabled}" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  Text="{Binding ircServer}" VerticalAlignment="Center" Width="160" Grid.Column="1" Grid.Row="0" mahapps:TextBoxHelper.Watermark="irc.twitch.tv"/>
+        <TextBox IsEnabled="{Binding ircPortEnabled}" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  Text="{Binding ircPort}" VerticalAlignment="Center" Width="160" Grid.Column="1" Grid.Row="1" mahapps:TextBoxHelper.Watermark="6667"/>
+        <TextBox IsEnabled="{Binding ircUsernameEnabled}" HorizontalAlignment="Center" Height="23" TextWrapping="NoWrap"  Text="{Binding ircUsername}" VerticalAlignment="Center" Width="160" Grid.Column="1" Grid.Row="2" mahapps:TextBoxHelper.Watermark="twitchbot"/>
+        <PasswordBox IsEnabled="{Binding ircOATHEnabled}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" Width="160" Helpers:PasswordBoxAssistant.BindPassword="True" Helpers:PasswordBoxAssistant.BoundPassword="{Binding ircOATH, Mode=TwoWay}">
             <PasswordBox.InputBindings>
                 <KeyBinding Key="Return" Command="{Binding LoginCommand}"/>
             </PasswordBox.InputBindings>
         </PasswordBox>
-        <Button Content="{Binding btnLoginText}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" Width="160" Height="40"/>
-        <CheckBox Content="Save Login" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" IsChecked="{Binding saveLogin}"/>
-
+        <Button IsEnabled="{Binding btnLoginEnabled}" Content="{Binding btnLoginText}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" Width="160" Height="40" Command="{Binding LoginCommand}"/>
+        <CheckBox IsEnabled="{Binding saveLoginEnabled}" Content="Save Login" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" IsChecked="{Binding saveLogin}"/>
+        <mahapps:MetroProgressBar IsIndeterminate="True" IsEnabled="True" Foreground="{DynamicResource AccentColorBrush}" Visibility="{Binding progressBarVisible,Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>

@@ -7,7 +7,11 @@ using PropertyChanged;
 using System.Reflection;
 using System.Diagnostics;
 using System.ComponentModel;
-using ChatSharp;
+using System.Configuration;
+using System.Net;
+using System.Net.Sockets;
+using System.IO;
+using TechLifeForum;
 namespace Twitch_Desktop_Manager
 {
     [ImplementPropertyChanged]
@@ -34,6 +38,19 @@ namespace Twitch_Desktop_Manager
 
         public string btnLoginText { get; set; }
         public Boolean saveLogin { get; set; }
+
+        public Boolean ircServerEnabled { get; set; }
+        public Boolean ircPortEnabled { get; set; }
+        public Boolean ircOATHEnabled { get; set; }
+        public Boolean ircUsernameEnabled { get; set; }
+        public Boolean saveLoginEnabled { get; set; }
+        public Boolean btnLoginEnabled { get; set; }
+
+        public Boolean progressBarVisible { get; set; }
+
+        private Configuration configuration { get; set; }
+
+        private IrcClient client { get; set; }
         #endregion
         //--------------END OF VARIABLES--------------\\
 
@@ -46,10 +63,19 @@ namespace Twitch_Desktop_Manager
             mainWindowCallbacks = mainCallbacks;
             version = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion.ToString();
 
+            configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+
             mainWindowCallbacks.ChangeDimensions(300, 300);
             btnLoginText = "Login";
             saveLogin = false;
             startupVisible = true;
+            ircServerEnabled = true;
+            ircPortEnabled = true;
+            ircUsernameEnabled = true;
+            ircOATHEnabled = true;
+            saveLoginEnabled = true;
+            btnLoginEnabled = true;
+            progressBarVisible = false;
             managerVisible = false;
             
             windowTitle = "Twitch Desktop Manager v" + version;
@@ -57,12 +83,50 @@ namespace Twitch_Desktop_Manager
             chatWorker = new BackgroundWorker();
             chatWorker.DoWork += ChatWorker_DoWork;
             chatWorker.WorkerSupportsCancellation = true;
+
+            ircServer = GetSetting("url");
+            ircPort = GetSetting("port");
+            ircUsername = GetSetting("username");
+            if (ircUsername != "")
+            {
+                saveLogin = true;
+                ircOATH = Encryption.Decrypt(GetSetting("oath"), Encryption.GetHashString(ircUsername));
+            }
         }
+
+
+        #region Settings Functions
+        private void AddorUpdateSetting(string key, string value = "")
+        {
+            if(configuration.AppSettings.Settings[key] == null)
+            {
+                configuration.AppSettings.Settings.Add(key, value);
+            }
+            else
+            {
+                configuration.AppSettings.Settings[key].Value = value;
+            }
+            configuration.Save();
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        private string GetSetting(string key)
+        {
+            if (configuration.AppSettings.Settings[key] != null)
+            {
+                return configuration.AppSettings.Settings[key].Value;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        #endregion
 
         #region Relay Command Functions
         private void Login(object currentObject)
         {
-            
+            chatWorker.RunWorkerAsync();
         }
         #endregion
 
@@ -84,7 +148,82 @@ namespace Twitch_Desktop_Manager
 
         private void ChatWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            ircServerEnabled = false;
+            ircPortEnabled = false;
+            ircUsernameEnabled = false;
+            ircOATHEnabled = false;
+            saveLoginEnabled = false;
+            btnLoginEnabled = false;
+            progressBarVisible = true;
+
+            client = new IrcClient(ircServer, Convert.ToInt32(ircPort));
+            client.AltNick = ircUsername;
+            client.Nick = ircUsername;
+            client.ServerPass = ircOATH;
+
+            client.ChannelMessage += Client_ChannelMessage;
+            client.NoticeMessage += Client_NoticeMessage;
+            client.OnConnect += Client_OnConnect;
+            client.PrivateMessage += Client_PrivateMessage;
+            client.ServerMessage += Client_ServerMessage;
+            client.UserJoined += Client_UserJoined;
+            client.UserLeft += Client_UserLeft;
+            client.UserNickChange += Client_UserNickChange;
+            client.UpdateUsers += Client_UpdateUsers;
+            client.NickTaken += Client_NickTaken;
+
+            client.Connect();
+        }
+        #region Socket Events
+        private void Client_NickTaken(object sender, StringEventArgs e)
+        {
             
         }
+
+        private void Client_UpdateUsers(object sender, UpdateUsersEventArgs e)
+        {
+            
+        }
+
+        private void Client_UserNickChange(object sender, UserNickChangedEventArgs e)
+        {
+            
+        }
+
+        private void Client_UserLeft(object sender, UserLeftEventArgs e)
+        {
+            
+        }
+
+        private void Client_UserJoined(object sender, UserJoinedEventArgs e)
+        {
+            
+        }
+
+        private void Client_ServerMessage(object sender, StringEventArgs e)
+        {
+            
+        }
+
+        private void Client_PrivateMessage(object sender, PrivateMessageEventArgs e)
+        {
+            
+        }
+
+        private void Client_OnConnect(object sender, EventArgs e)
+        {
+            client.JoinChannel("#" + ircUsername);
+        }
+
+        private void Client_NoticeMessage(object sender, NoticeMessageEventArgs e)
+        {
+            
+        }
+
+        private void Client_ChannelMessage(object sender, ChannelMessageEventArgs e)
+        {
+            
+        }
+        #endregion
     }
 }
