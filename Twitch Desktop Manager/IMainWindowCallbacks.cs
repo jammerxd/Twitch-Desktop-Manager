@@ -9,5 +9,7 @@ namespace Twitch_Desktop_Manager
     {
         void ShowMessage(string Title, string Message, Boolean exit);
         void ChangeDimensions(int Width, int Height);
+        void ChangeTheme(string theme);
+        void ChangeAccent(string accent);
     }
 }
