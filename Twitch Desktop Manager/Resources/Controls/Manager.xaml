@@ -8,8 +8,9 @@
             xmlns:Controls="clr-namespace:Twitch_Desktop_Manager.Resources.Controls"
             xmlns:Helpers="clr-namespace:Twitch_Desktop_Manager.Resources.Helpers"
             mc:Ignorable="d" 
-            d:DesignHeight="300" 
-            d:DesignWidth="300">
+            d:DesignHeight="768" 
+            d:DesignWidth="1366"
+            >
     <Grid>
         <Grid.Resources>
             <ResourceDictionary>

@@ -292,6 +292,9 @@ namespace Twitch_Desktop_Manager
                 client.NickTaken += Client_NickTaken;
 
                 client.Connect();
+
+                
+                
             }
         }
         #region Socket Events
@@ -332,24 +335,39 @@ namespace Twitch_Desktop_Manager
 
         private void Client_OnConnect(object sender, EventArgs e)
         {
-            client.JoinChannel("#" + ircUsername);
-            if(saveLogin)
-            {
-                AddorUpdateSetting("url", ircServer);
-                AddorUpdateSetting("port", ircPort);
-                AddorUpdateSetting("username", ircUsername);
-                AddorUpdateSetting("oath", Encryption.Encrypt(ircOATH, Encryption.GetHashString(ircUsername)));
+            if(!client.Connected)
+            { 
+                ircServerEnabled = true;
+                ircPortEnabled = true;
+                ircUsernameEnabled = true;
+                ircOATHEnabled = true;
+                saveLoginEnabled = true;
+                btnLoginEnabled = true;
+                progressBarVisible = false;
+                mainWindowCallbacks.ShowMessage("Connection Error", "Error connecting to the server.", false);
 
             }
             else
             {
-                AddorUpdateSetting("url");
-                AddorUpdateSetting("port");
-                AddorUpdateSetting("username");
-                AddorUpdateSetting("oath");
+                client.JoinChannel("#" + ircUsername);
+                if(saveLogin)
+                {
+                    AddorUpdateSetting("url", ircServer);
+                    AddorUpdateSetting("port", ircPort);
+                    AddorUpdateSetting("username", ircUsername);
+                    AddorUpdateSetting("oath", Encryption.Encrypt(ircOATH, Encryption.GetHashString(ircUsername)));
+
+                }
+                else
+                {
+                    AddorUpdateSetting("url");
+                    AddorUpdateSetting("port");
+                    AddorUpdateSetting("username");
+                    AddorUpdateSetting("oath");
+                }
+                mainWindowCallbacks.ChangeDimensions(1366, 768);
+                
             }
-
-
            
         }
 

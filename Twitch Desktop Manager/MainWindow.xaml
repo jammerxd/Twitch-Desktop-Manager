@@ -40,8 +40,6 @@
                         Value="{Binding displayName, Mode=OneWay}" />
             <Setter Property="CommandParameter" Value="{Binding Name}"/>
             <Setter Property="Command" Value="{Binding ChangeThemeCommand}"/>
-
-
         </Style>
 
         <Style x:Key="AccentColorMenuItemStyle"

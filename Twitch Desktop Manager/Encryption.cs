@@ -5,19 +5,20 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Diagnostics;
 public static class Encryption
 {
     // This constant string is used as a "salt" value for the PasswordDeriveBytes function calls.
     // This size of the IV (in bytes) must = (keysize / 8).  Default keysize is 256, so the IV must be
     // 32 bytes long.  Using a 16 character string here gives us 32 bytes when converted to a byte array.
-    private static readonly byte[] initVectorBytes = Encoding.ASCII.GetBytes("hgfd56udg579kvb6");
-
+    private static readonly byte[] initVectorBytes = Encoding.ASCII.GetBytes(Twitch_Desktop_Manager.ThumbPrint.Value().Replace("-","").Substring(0,16));
+    
     // This constant is used to determine the keysize of the encryption algorithm.
     private const int keysize = 256;
 
     public static string Encrypt(string plainText, string passPhrase)
     {
+        
         byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
         using (PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null))
         {
@@ -44,6 +45,7 @@ public static class Encryption
 
     public static string Decrypt(string cipherText, string passPhrase)
     {
+       
         byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
         using (PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null))
         {
