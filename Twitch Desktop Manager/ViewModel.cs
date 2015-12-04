@@ -365,7 +365,9 @@ namespace Twitch_Desktop_Manager
                     AddorUpdateSetting("username");
                     AddorUpdateSetting("oath");
                 }
+                //prep main ui and load channel settings
                 mainWindowCallbacks.ChangeDimensions(1366, 768);
+
                 
             }
            

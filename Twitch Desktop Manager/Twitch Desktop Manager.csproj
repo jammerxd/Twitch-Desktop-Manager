@@ -89,6 +89,11 @@
     <Compile Include="Resources\Controls\Startup.xaml.cs">
       <DependentUpon>Startup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Data\ChannelConfig.cs" />
+    <Compile Include="Resources\Data\ChannelConfigClasses\AutomaticMessage.cs" />
+    <Compile Include="Resources\Data\ChannelConfigClasses\BanConfig.cs" />
+    <Compile Include="Resources\Data\ChannelConfigClasses\CustomCommand.cs" />
+    <Compile Include="Resources\Data\ChannelConfigClasses\ObservableDictionary.cs" />
     <Compile Include="Resources\Helpers\PasswordAssistant.cs" />
     <Compile Include="Security.cs" />
     <Compile Include="ViewModel.cs" />
